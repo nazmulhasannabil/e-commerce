@@ -3,10 +3,10 @@
 import { Button } from "@heroui/react";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { createNewCategory, updateCategory } from "@/lib/firestore/category/write";
-import { getCategoryById } from "@/lib/firestore/category/read";
+import { createNewBrand, updateBrand } from "@/lib/firestore/brand/write";
+import { getBrandById } from "@/lib/firestore/brand/read";
 
-export default function Form({ editCategoryId, onEditComplete }) {
+export default function Form({ editBrandId, onEditComplete }) {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [data, setData] = useState(null);
@@ -21,11 +21,11 @@ export default function Form({ editCategoryId, onEditComplete }) {
     setIsClient(true);
   }, []);
 
-  // Load category data for editing
+  // Load brand data for editing
   useEffect(() => {
-    if (editCategoryId) {
+    if (editBrandId) {
       setIsEditMode(true);
-      loadCategoryData(editCategoryId);
+      loadBrandData(editBrandId);
     } else {
       setIsEditMode(false);
       // Reset form
@@ -33,20 +33,20 @@ export default function Form({ editCategoryId, onEditComplete }) {
       setImage(null);
       setImageUrl("");
     }
-  }, [editCategoryId]);
+  }, [editBrandId]);
 
-  const loadCategoryData = async (id) => {
+  const loadBrandData = async (id) => {
     try {
       setIsLoading(true);
-      const category = await getCategoryById(id);
+      const brand = await getBrandById(id);
       setData({
-        name: category.name,
-        slug: category.slug,
+        name: brand.name,
+        slug: brand.slug,
       });
-      setImageUrl(category.image);
+      setImageUrl(brand.image);
       // Don't set image file since we only have the URL
     } catch (error) {
-      toast.error("Failed to load category data: " + error.message);
+      toast.error("Failed to load brand data: " + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +63,7 @@ export default function Form({ editCategoryId, onEditComplete }) {
 
     try {
       setUploading(true);
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`, {
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=e2eab96f6583c73dfeb489357e18b6aa`, {
         method: 'POST',
         body: formData,
       });
@@ -120,19 +120,19 @@ export default function Form({ editCategoryId, onEditComplete }) {
     setIsLoading(true);
     try {
       if (isEditMode) {
-        // Update existing category
-        await updateCategory(editCategoryId, { 
+        // Update existing brand
+        await updateBrand(editBrandId, { 
           data: data, 
           imageUrl: imageUrl
         });
-        toast.success("Category updated successfully");
+        toast.success("Brand updated successfully");
       } else {
-        // Create new category
-        await createNewCategory({ 
+        // Create new brand
+        await createNewBrand({ 
           data: data, 
           imageUrl: imageUrl
         });
-        toast.success("Category created successfully");
+        toast.success("Brand created successfully");
       }
       
       // Reset form
@@ -145,7 +145,7 @@ export default function Form({ editCategoryId, onEditComplete }) {
         onEditComplete();
       }
     } catch (error) {
-      toast.error(error?.message || `Failed to ${isEditMode ? 'update' : 'create'} category`);
+      toast.error(error?.message || `Failed to ${isEditMode ? 'update' : 'create'} brand`);
     }
     setIsLoading(false);
   };
@@ -157,11 +157,11 @@ export default function Form({ editCategoryId, onEditComplete }) {
 
   return (
     <div className="bg-white w-full rounded-xl p-5 flex flex-col gap-3">
-      <h1 className="font-semibold text-lg">{isEditMode ? "Edit Category" : "Create Category"}</h1>
+      <h1 className="font-semibold text-lg">{isEditMode ? "Edit Brand" : "Create Brand"}</h1>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-2">
-        {/* category image upload */}
+        {/* brand image upload */}
         <div className="flex flex-col gap-1">
           <label className="block text-sm font-medium mb-1">Image</label>
           
@@ -224,7 +224,7 @@ export default function Form({ editCategoryId, onEditComplete }) {
               handleData("name", e.target.value)
             }}
             className="w-full p-2 border rounded-md focus:outline-none "
-            placeholder="Enter category name" />
+            placeholder="Enter brand name" />
         </div>
         <div>
           <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>
