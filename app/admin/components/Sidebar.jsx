@@ -17,7 +17,7 @@ export default function Sidebar() {
         { name: "Admins", href: "/admin/admins", icon: <ShieldCheck className="w-5 h-5" /> },
     ];
     return (
-        <div className="h-screen bg-white p-4 overflow-hidden flex gap-8 flex-col border-r border-gray-200">
+        <div className="h-screen bg-white p-4 overflow-hidden flex gap-8 flex-col border-r border-gray-200 z-50">
             <h1 className="text-2xl font-bold cursor-pointer">Online <span className="text-orange-500">Shop</span></h1>
 
             <div className="flex-1 flex flex-col gap-5">

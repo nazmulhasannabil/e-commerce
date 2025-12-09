@@ -33,7 +33,7 @@ export default function AdminLayout({ children }) {
             </div>
             <div 
             ref={sidebarRef}
-            className={`fixed md:hidden ${isOpen ? 'translate-x-0' : '-translate-x-[250px]'} ease-in-out transition-all duration-300`}>
+            className={`fixed md:hidden  ${isOpen ? 'translate-x-0' : '-translate-x-[250px]'} ease-in-out transition-all duration-300 z-50`}>
                 <Sidebar />
             </div>
             <section className="flex-1 flex flex-col">
