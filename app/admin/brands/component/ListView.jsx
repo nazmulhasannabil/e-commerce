@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllBrands, deleteBrand, getBrandById } from "@/lib/firestore/brand/read";
+import { getAllBrands, deleteBrand, getBrandById } from "@/lib/firestore/brands/read";
 import toast from "react-hot-toast";
 import { Edit, Trash2 } from "lucide-react";
 import Form from "./Form";

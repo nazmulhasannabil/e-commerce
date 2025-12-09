@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllCategories, deleteCategory, getCategoryById } from "@/lib/firestore/category/read";
+import { getAllCategories, deleteCategory, getCategoryById } from "@/lib/firestore/categories/read";
 import toast from "react-hot-toast";
 import { Edit, Trash2 } from "lucide-react";
 import Form from "./Form";

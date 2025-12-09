@@ -3,8 +3,8 @@
 import { Button } from "@heroui/react";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { createNewBrand, updateBrand } from "@/lib/firestore/brand/write";
-import { getBrandById } from "@/lib/firestore/brand/read";
+import { createNewBrand, updateBrand } from "@/lib/firestore/brands/write";
+import { getBrandById } from "@/lib/firestore/brands/read";
 
 export default function Form({ editBrandId, onEditComplete }) {
   const [image, setImage] = useState(null);

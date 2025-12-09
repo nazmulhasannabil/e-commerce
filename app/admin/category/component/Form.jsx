@@ -3,8 +3,8 @@
 import { Button } from "@heroui/react";
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { createNewCategory, updateCategory } from "@/lib/firestore/category/write";
-import { getCategoryById } from "@/lib/firestore/category/read";
+import { createNewCategory, updateCategory } from "@/lib/firestore/categories/write";
+import { getCategoryById } from "@/lib/firestore/categories/read";
 
 export default function Form({ editCategoryId, onEditComplete }) {
   const [image, setImage] = useState(null);
