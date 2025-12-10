@@ -1,4 +1,3 @@
-
 "use client";
 
 import { getAdmin } from "@/lib/firestore/admins/read_server";
@@ -142,7 +141,7 @@ export default function Form() {
             required
           />
         </div>
-        <Button isLoading={isLoading} isDisabled={isLoading} type="submit">
+        <Button className="w-full rounded-lg bg-orange-500 hover:bg-orange-600" type="submit">
           {id ? "Update" : "Create"}
         </Button>
       </form>

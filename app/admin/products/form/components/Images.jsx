@@ -37,6 +37,7 @@ export default function Images({
           type="file"
           id="product-feature-image"
           name="product-feature-image"
+          accept="image/*"
           onChange={(e) => {
             if (e.target.files.length > 0) {
               setFeatureImage(e.target.files[0]);
@@ -48,9 +49,10 @@ export default function Images({
       <div className="flex flex-col gap-1">
         {imageList?.length === 0 && data?.imageList?.length != 0 && (
           <div className="flex flex-wrap gap-3">
-            {data?.imageList?.map((item) => {
+            {data?.imageList?.map((item, index) => {
               return (
                 <img
+                  key={index}
                   className="w-20 object-cover rounded-lg"
                   src={item}
                   alt=""
@@ -61,9 +63,10 @@ export default function Images({
         )}
         {imageList?.length > 0 && (
           <div className="flex flex-wrap gap-3">
-            {imageList?.map((item) => {
+            {imageList?.map((item, index) => {
               return (
                 <img
+                  key={index}
                   className="w-20 object-cover rounded-lg"
                   src={URL.createObjectURL(item)}
                   alt=""
@@ -79,6 +82,7 @@ export default function Images({
           type="file"
           id="product-images"
           name="product-images"
+          accept="image/*"
           multiple
           onChange={(e) => {
             const newFiles = [];

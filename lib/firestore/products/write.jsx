@@ -1,4 +1,4 @@
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import {
   collection,
   deleteDoc,
@@ -6,7 +6,29 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
+// Upload image to ImgBB
+const uploadToImgBB = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=e2eab96f6583c73dfeb489357e18b6aa`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      return result.data.url;
+    } else {
+      throw new Error(result.error.message || 'Failed to upload image');
+    }
+  } catch (error) {
+    throw new Error('Failed to upload image: ' + error.message);
+  }
+};
 
 export const createNewProduct = async ({ data, featureImage, imageList }) => {
   if (!data?.title) {
@@ -15,17 +37,16 @@ export const createNewProduct = async ({ data, featureImage, imageList }) => {
   if (!featureImage) {
     throw new Error("Feature Image is required");
   }
-  const featureImageRef = ref(storage, `products/${featureImage?.name}`);
-  await uploadBytes(featureImageRef, featureImage);
-  const featureImageURL = await getDownloadURL(featureImageRef);
+  
+  // Upload feature image to ImgBB
+  const featureImageURL = await uploadToImgBB(featureImage);
 
   let imageURLList = [];
 
+  // Upload image list to ImgBB
   for (let i = 0; i < imageList?.length; i++) {
     const image = imageList[i];
-    const imageRef = ref(storage, `products/${image?.name}`);
-    await uploadBytes(imageRef, image);
-    const url = await getDownloadURL(imageRef);
+    const url = await uploadToImgBB(image);
     imageURLList.push(url);
   }
 
@@ -50,19 +71,17 @@ export const updateProduct = async ({ data, featureImage, imageList }) => {
 
   let featureImageURL = data?.featureImageURL ?? "";
 
+  // Upload feature image to ImgBB if provided
   if (featureImage) {
-    const featureImageRef = ref(storage, `products/${featureImage?.name}`);
-    await uploadBytes(featureImageRef, featureImage);
-    featureImageURL = await getDownloadURL(featureImageRef);
+    featureImageURL = await uploadToImgBB(featureImage);
   }
 
   let imageURLList = imageList?.length === 0 ? data?.imageList : [];
 
+  // Upload new images to ImgBB
   for (let i = 0; i < imageList?.length; i++) {
     const image = imageList[i];
-    const imageRef = ref(storage, `products/${image?.name}`);
-    await uploadBytes(imageRef, image);
-    const url = await getDownloadURL(imageRef);
+    const url = await uploadToImgBB(image);
     imageURLList.push(url);
   }
 
